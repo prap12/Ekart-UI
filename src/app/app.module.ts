@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 
@@ -10,9 +11,10 @@ import { FooterComponent } from './footer/footer.component';
 import { TopbarComponent } from './header/topbar/topbar.component';
 import { NavbarComponent } from './header/navbar/navbar.component';
 import { LoginComponent } from './login/login.component';
-import { ProductCatalogComponent } from './product-catalog/product-catalog.component';
-import { RatingsComponent } from './product-catalog/ratings/ratings.component';
-import {ProductItemComponent} from './product-catalog/product-item/product-item.component';
+import { CatalogComponent } from './catalog/catalog.component';
+import { RatingComponent } from './catalog/product/rating/rating.component';
+import { ProductComponent } from './catalog/product/product.component';
+import { CatalogService } from './catalog/catalog.service';
 
 @NgModule({
   declarations: [
@@ -22,17 +24,20 @@ import {ProductItemComponent} from './product-catalog/product-item/product-item.
     TopbarComponent,
     NavbarComponent,
     LoginComponent,
-    ProductCatalogComponent,
-    RatingsComponent,
-    ProductItemComponent
+    CatalogComponent,
+    RatingComponent,
+    ProductComponent
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     NgbModule,
     AppRoutingModule,
     FormsModule
   ],
-  providers: [],
+  providers: [
+    CatalogService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
