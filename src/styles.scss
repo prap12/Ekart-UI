@@ -12,6 +12,11 @@ body {
   line-height: 1.5;
 }
 
+/* bootstrap style which is not required */
+.sr-only {
+    display: none;
+}
+
 /* Global form style */
 .form {
     &-control {
