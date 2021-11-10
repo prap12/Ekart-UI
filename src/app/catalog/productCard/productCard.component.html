@@ -7,7 +7,7 @@
     <img [src]="image" alt="productImage">
     </div>
   </a>
-  <div class="card-body py-2">
+  <div class="card-body py-2" [ngClass]="{'card-body-list-view': !gridView}">
     <h3 class="product-title fs-sm">
       <a href="#">{{dataSource.name}}</a>
     </h3>
@@ -28,8 +28,14 @@
     </div>
   </div>
   <div class="card-body card-body-hidden">
+    <div>
+      <button class="btn btn-primary btn-sm d-block w-100 mb-2" type="button">
+        <i class="bi bi-cart2"></i>
+        Add to Cart
+      </button>
+    </div>
     <div class="text-center quick-view">
-      <a class="nav-link-style fs-ms" href="#" data-bs-toggle="modal">
+      <a class="nav-link-style fs-ms" (click)="open(dataSource)" >
         <i class="bi-eye align-middle me-1"></i>Quick view</a>
     </div>
   </div>

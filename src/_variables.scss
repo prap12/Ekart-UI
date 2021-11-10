@@ -109,3 +109,23 @@ $nav-link-active-color:                   $primary !default;
 $nav-link-light-color:                    rgba($white, .65) !default;
 $nav-link-light-hover-color:              $white !default;
 $nav-link-light-active-color:             $white !default;
+
+// Quickview
+$product-title-link-hover-color:      $primary-red !default;
+$product-title-link-transition:       color .25s ease-in-out !default;
+// Product gallery
+$product-gallery-thumb-size:                5rem !default;
+$product-gallery-thumb-spacing:             .625rem !default;
+$product-gallery-thumb-border-width:        $border-width !default;
+$product-gallery-thumb-border-color:        $border-color !default;
+$product-gallery-thumb-color:               $gray-700 !default;
+$product-gallery-thumb-font-size:           $font-size-sm !default;
+$product-gallery-thumb-border-radius:       $border-radius !default;
+$product-gallery-thumb-transition:          border-color .2s ease-in-out !default;
+$product-gallery-thumb-hover-border-color:  darken($border-color, 8%) !default;
+$product-gallery-thumb-active-border-color: $primary-red !default;
+$product-gallery-preview-transition:        opacity .3s ease-in-out !default;
+
+//product available badge
+$font-size-ms:                ($font-size-base * .8125) !default;
+$product-available-color:   #42d697;

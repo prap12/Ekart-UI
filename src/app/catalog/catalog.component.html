@@ -50,7 +50,8 @@
             [dataSource]="data"
             *ngFor="let data of productCards| async;"
             class="px-2 mb-4"
-            [ngClass]="{'col-md-3 col-sm-5': gridView, 'mt-3': !gridView}"  
+            [ngClass]="{'col-md-3 col-sm-5': gridView, 'mt-3': !gridView}"
+            [gridView]="gridView"
           >
           </productCard>
         </div>

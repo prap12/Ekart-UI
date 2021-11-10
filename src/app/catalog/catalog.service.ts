@@ -1,4 +1,5 @@
 import { HttpClient } from '@angular/common/http';
+import { Byte } from '@angular/compiler/src/util';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -31,5 +32,11 @@ export class CatalogService {
 
   getAllSizes(): Observable<Size[]> {
     return this.http.get<Size[]>(sizesUrl);
+  }
+
+  getProductImagesById(id: number): Observable<Byte[]> {
+    const productImgUrl = `${productUrl}/${id}/images`;
+    console.log(productImgUrl);
+    return this.http.get<Byte[]>(productImgUrl);
   }
 }

@@ -19,6 +19,7 @@ import { HeaderComponent } from './header/header.component';
 import { NavbarComponent } from './header/navbar/navbar.component';
 import { TopbarComponent } from './header/topbar/topbar.component';
 import { LoginComponent } from './login/login.component';
+import { QuickViewComponent } from './catalog/productCard/quick-view/quick-view.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { LoginComponent } from './login/login.component';
     ProductCardComponent,
     ProductManagementComponent,
     ProductFormComponent,
-    FilterComponent
+    FilterComponent,
+    QuickViewComponent
   ],
   imports: [
     BrowserModule,
