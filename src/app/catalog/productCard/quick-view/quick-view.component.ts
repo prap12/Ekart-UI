@@ -2,6 +2,7 @@ import { Byte } from '@angular/compiler/src/util';
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
+
 import { ProductCard } from '../../catalog.model';
 import { CatalogService } from '../../catalog.service';
 
