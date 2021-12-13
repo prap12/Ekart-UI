@@ -43,8 +43,8 @@ body {
     }
 }
 
-.ng-touched.ng-invalid:not(form)  {
-  border-left: 5px solid $error;
+.ng-touched.ng-invalid:not(form) {
+    border-left: 5px solid $error;
 }
 
 /* Global button style */
@@ -53,14 +53,17 @@ body {
     border-color: $primary-red;
     color: white;
 
-    &:hover, &:focus-visible, &:active, &:focus {
+    &:hover,
+    &:focus-visible,
+    &:active,
+    &:focus {
         background-color: $primary-red-dark;
         border-color: $primary-red-dark;
     }
 
     &:disabled {
-      background-color: $primary-red-light;
-      border-color: $primary-red-light;
+        background-color: $primary-red-light;
+        border-color: $primary-red-light;
     }
 }
 
@@ -69,13 +72,22 @@ a {
     cursor: pointer;
 }
 
-/* Modal header style*/
-.modal-header {
-    display: block;
-    position: relative;
-    background: none;
-    border: 1px solid transparent;
-    font-weight: 500;
-    padding: 0.75rem 1.25rem;
-    color: $primary-grey;
+/* Modal style*/
+.modal {
+    &-header {
+        display: block;
+        position: relative;
+        background: none;
+        border: 1px solid transparent;
+        font-weight: 500;
+        padding: 0.75rem 1.25rem;
+        color: $primary-grey;
+    }
+
+    &-footer {
+        display: flex;
+        justify-content: flex-end;
+        padding: 0;
+        border: none;
+    }
 }

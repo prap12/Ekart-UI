@@ -31,7 +31,10 @@
           <a class="pwd-forgot" href="#">Forgot password?</a>
         </div>
 
-        <button class="btn btn-primary login-btn" [disabled]="!signIn.valid">Sign in</button>
+        <div class='modal-footer'>
+          <button class="btn btn-primary" [disabled]="!signIn.valid">Sign in</button>
+          <button class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+        </div>
       </form>
     </ng-template>
   </li>
@@ -96,7 +99,10 @@
           </small>
         </div>
 
-        <button class="btn btn-primary login-btn" [disabled]="!signUp.valid">Sign up</button>
+        <div class='modal-footer'>
+          <button class="btn btn-primary" [disabled]="!signUp.valid">Sign up</button>
+          <button class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+        </div>
       </form>
     </ng-template>
   </li>

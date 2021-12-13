@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
@@ -12,10 +13,10 @@ import { LoginService } from './login.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-
   invalidLogin: boolean = false;
 
-  constructor(private loginService: LoginService) { }
+  constructor(private activeModal: NgbActiveModal,
+              private loginService: LoginService) { }
 
   onSignIn(data: NgForm) {
     const credentials: Partial<User> = {
@@ -26,6 +27,7 @@ export class LoginComponent {
     this.loginService.login(credentials).pipe(
       tap(() => {
         this.invalidLogin = false;
+        this.activeModal.close();
       }),
       catchError(() => {
         this.invalidLogin = true;
@@ -42,6 +44,17 @@ export class LoginComponent {
       mobileNumber: data.form.value.mobileNumber,
     };
 
-    this.loginService.addUser(user).subscribe();
+    this.loginService.addUser(user).pipe(
+      tap(() => {
+        this.activeModal.close();
+      }),
+      catchError(() => {
+        return of();
+      })
+    ).subscribe();
+  }
+
+  closeModal(): void {
+    this.activeModal.close();
   }
 }
