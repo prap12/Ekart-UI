@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -10,6 +10,7 @@ import { ProductFormComponent } from './admin/product-form/product-form.componen
 import { ProductManagementComponent } from './admin/product-management/product-management.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { TokenInterceptor } from './auth/token-interceptor.service';
 import { CatalogComponent } from './catalog/catalog.component';
 import { CatalogService } from './catalog/catalog.service';
 import { FilterComponent } from './catalog/filter/filter.component';
@@ -20,6 +21,9 @@ import { HeaderComponent } from './header/header.component';
 import { NavbarComponent } from './header/navbar/navbar.component';
 import { TopbarComponent } from './header/topbar/topbar.component';
 import { LoginComponent } from './login/login.component';
+import { MatchPasswordDirective } from './shared/directives/match-password.directive';
+import { MobileNumberValidatorDirective } from './shared/directives/mobile-number-validator.directive';
+import { PasswordValidatorDirective } from './shared/directives/password-validator.directive';
 
 
 @NgModule({
@@ -35,7 +39,10 @@ import { LoginComponent } from './login/login.component';
     ProductManagementComponent,
     ProductFormComponent,
     FilterComponent,
-    QuickViewComponent
+    QuickViewComponent,
+    PasswordValidatorDirective,
+    MatchPasswordDirective,
+    MobileNumberValidatorDirective
   ],
   imports: [
     BrowserModule,
@@ -46,6 +53,11 @@ import { LoginComponent } from './login/login.component';
     NouisliderModule
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    },
     CatalogService,
     AdminService
   ],

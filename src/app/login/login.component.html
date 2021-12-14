@@ -5,24 +5,36 @@
       Sign in
     </a>
     <ng-template ngbNavContent>
-      <form #signIn="ngForm" (ngSubmit)="onSignIn()">
+      <form #signIn="ngForm" (ngSubmit)="onSignIn(signIn)">
         <div *ngIf="invalidLogin" class="alert alert-danger"> Invalid username or password</div>
-        <label class="form-label" for="email">Email</label>
-        <input type="text" id="email" class="form-control" name="email" ngModel placeholder="Email Address" required
-          autofocus>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="text" class="form-control" name="email" ngModel #email="ngModel" required autofocus>
+          <small class="text-danger" *ngIf="email.touched && email.errors?.required">
+            Email address is required
+          </small>
+        </div>
 
-        <label class="form-label" for="pwd">Password</label>
-        <input type="password" id="pwd" class="form-control" name="password" ngModel placeholder="Password" required>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-control" name="password" ngModel #password="ngModel" required>
+          <small class="text-danger" *ngIf="password.touched && password.errors?.required">
+            Password is required
+          </small>
+        </div>
 
-        <div class="pwd">
+        <div class="form-group pwd">
           <div class="pwd-remember">
             <input id="remember" type="checkbox" class="form-checkbox">
-            <label class="form-label" for="remember">Remember me</label>
+            <label class="form-label">Remember me</label>
           </div>
           <a class="pwd-forgot" href="#">Forgot password?</a>
         </div>
 
-        <button class="btn btn-primary login-btn">Sign in</button>
+        <div class='modal-footer'>
+          <button class="btn btn-primary" [disabled]="!signIn.valid">Sign in</button>
+          <button class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+        </div>
       </form>
     </ng-template>
   </li>
@@ -32,20 +44,65 @@
       Sign up
     </a>
     <ng-template ngbNavContent>
-      <form #signUp="ngForm" (ngSubmit)="onSignUp()">
-        <label class="form-label" for="name">Name</label>
-        <input type="text" id="name" class="form-control" name="name" ngModel placeholder="Name" required autofocus>
+      <form #signUp="ngForm" (ngSubmit)="onSignUp(signUp)" [matchPassword]="['password', 'confirmPassword']" novalidate>
+        <div class="form-group">
+          <label class="form-label">Name</label>
+          <input type="text" class="form-control" name="name" #name="ngModel" ngModel required>
+          <small class="text-danger" *ngIf="name.touched && name.errors?.required">
+            Name is required
+          </small>
+        </div>
 
-        <label class="form-label" for="email">Email</label>
-        <input type="text" id="email" class="form-control" name="email" ngModel placeholder="Email Address" required>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="text" class="form-control" name="email" #email="ngModel" ngModel required email>
+          <small class="text-danger" *ngIf="email.touched && email.errors?.required">
+            Email address is required
+          </small>
+          <small class="text-danger" *ngIf="email.touched && email.errors?.email">
+            Invalid email address
+          </small>
+        </div>
 
-        <label class="form-label" for="pwd">Password</label>
-        <input type="password" id="pwd" class="form-control" name="password" ngModel required>
+        <div class="form-group">
+          <label class="form-label">Mobile Number</label>
+          <input type="tel" class="form-control" name="mobileNumber" ngModel #mobNum="ngModel" required validateMobNum>
+          <small class="text-danger" *ngIf="mobNum.touched && mobNum.errors?.required">
+            Mobile number is required
+          </small>
+          <small class="text-danger" *ngIf="mobNum.touched && mobNum.errors?.invalidNumber">
+            Invalid mobile number
+          </small>
+        </div>
 
-        <label class="form-label" for="confmpwd">Confirm password</label>
-        <input type="password" id="confmpwd" class="form-control" name="confPassword" ngModel required>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-control" name="password" ngModel #password="ngModel" required
+            validatePassword>
+          <small class="text-danger" *ngIf="password.touched && password.errors?.required">
+            Password is required
+          </small>
+          <small class="text-danger" *ngIf="password.touched && password.errors?.invalidPassword">
+            Password should have minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter and 1 number
+          </small>
+        </div>
 
-        <button class="btn btn-primary login-btn">Sign up</button>
+        <div class="form-group">
+          <label class="form-label">Confirm password</label>
+          <input type="password" class="form-control" name="confirmPassword" ngModel #confirmPassword="ngModel"
+            required>
+          <small class="text-danger" *ngIf="confirmPassword.touched && confirmPassword.errors?.required">
+            Password confirmation is required
+          </small>
+          <small class="text-danger" *ngIf="confirmPassword.touched && confirmPassword.errors?.passwordMismatch">
+            Passwords do not match
+          </small>
+        </div>
+
+        <div class='modal-footer'>
+          <button class="btn btn-primary" [disabled]="!signUp.valid">Sign up</button>
+          <button class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+        </div>
       </form>
     </ng-template>
   </li>
