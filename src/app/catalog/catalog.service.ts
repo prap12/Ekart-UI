@@ -4,12 +4,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
-import { Brand, Category, ProductCard, Size } from './catalog.model';
+import { Brand, Category, ProductCard, Size, SubCategory } from './catalog.model';
 
 const productUrl = `${environment.apiUrl}/products`;
 const categoryUrl = `${environment.apiUrl}/category`;
 const brandsUrl = `${environment.apiUrl}/brands`;
 const sizesUrl = `${environment.apiUrl}/sizes`;
+const subcategoriesUrl = `${environment.apiUrl}/subcategory`;
 
 @Injectable({
   providedIn: 'root'
@@ -22,8 +23,22 @@ export class CatalogService {
     return this.http.get<ProductCard[]>(productUrl);
   }
 
+  filterProductByCategory(id: number): Observable<ProductCard[]> {
+    const url = `${productUrl}/category/${id}`;
+    return this.http.get<ProductCard[]>(url);
+  }
+
+  filterProductBySubCategory(id: number): Observable<ProductCard[]> {
+    const url = `${productUrl}/subcategory/${id}`;
+    return this.http.get<ProductCard[]>(url);
+  }
+
   getAllCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(categoryUrl);
+  }
+
+  getAllSubCategories(): Observable<SubCategory[]> {
+    return this.http.get<SubCategory[]>(subcategoriesUrl);
   }
 
   getAllBrands(): Observable<Brand[]> {
@@ -36,7 +51,6 @@ export class CatalogService {
 
   getProductImagesById(id: number): Observable<Byte[]> {
     const productImgUrl = `${productUrl}/${id}/images`;
-    console.log(productImgUrl);
     return this.http.get<Byte[]>(productImgUrl);
   }
 }

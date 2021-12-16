@@ -28,4 +28,8 @@ export class CatalogComponent implements OnInit {
   changeDisplayView(value: string): void {
     this.gridView = value === 'grid';
   }
+
+  receiveFilteredProduct($event) {
+    this.productCards = $event;
+  }
 }

@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { NouisliderComponent } from 'ng2-nouislider';
+import { Observable } from 'rxjs';
 
-import { Brand, Category, Color, Record, Size, SubCategory } from '../catalog.model';
+import { Brand, Category, Color, ProductCard, Record, Size, SubCategory } from '../catalog.model';
 import { CatalogService } from '../catalog.service';
 
 @Component({
@@ -11,6 +12,7 @@ import { CatalogService } from '../catalog.service';
   encapsulation: ViewEncapsulation.None
 })
 export class FilterComponent implements OnInit {
+  @Output() filterEvent = new EventEmitter<Observable<ProductCard[]>>();
   categories: Category[] = [];
   allsubcategories: SubCategory[] = [];
   subcategories: SubCategory[] = [];
@@ -21,7 +23,7 @@ export class FilterComponent implements OnInit {
   searchText: string = '';
   brandSearchText: string = '';
   sizeSearchText: string = '';
-  rangeSlider: number[] = [100, 3000];
+  rangeSlider: number[] = [0, 3000];
   colors = Color;
   // tslint:disable-next-line: no-any
   rangeSliderConfig: any = {
@@ -50,8 +52,10 @@ export class FilterComponent implements OnInit {
   ngOnInit(): void {
     this.catalogService.getAllCategories().subscribe((data) => {
       this.categories = data;
-      this.allsubcategories = data;
-      this.subcategories = this.allsubcategories;
+    });
+
+    this.catalogService.getAllSubCategories().subscribe((data) => {
+      this.subcategories = this.allsubcategories = data;
     });
 
     this.catalogService.getAllBrands().subscribe((data) => {
@@ -66,7 +70,7 @@ export class FilterComponent implements OnInit {
   }
 
   search(event: Event): void {
-    const input = (event.target as HTMLInputElement).value;
+    const input = (event.target as HTMLInputElement).value.toLocaleLowerCase();
     this.subcategories = this.allsubcategories.filter((data) => data.name.toLowerCase().includes(input));
   }
 
@@ -93,17 +97,27 @@ export class FilterComponent implements OnInit {
   }
 
   searchBrands(event: Event) {
-    const input = (event.target as HTMLInputElement).value;
+    const input = (event.target as HTMLInputElement).value.toLocaleLowerCase();
     this.brands = this.allbrands.filter((data) => data.name.toLowerCase().includes(input));
   }
 
   searchSizes(event: Event) {
-    const input = (event.target as HTMLInputElement).value;
+    const input = (event.target as HTMLInputElement).value.toLocaleLowerCase();
     this.sizes = this.allsizes.filter((data) => data.size.toLowerCase().includes(input));
   }
 
   getColors(): string[] {
     const keys = Object.keys(this.colors);
     return  keys.slice(keys.length / 2);
+  }
+
+  filterProductByCategory(id: number): void {
+    const filteredProducts: Observable<ProductCard[]> = this.catalogService.filterProductByCategory(id);
+    this.filterEvent.emit(filteredProducts);
+  }
+
+  filterProductBySubCategory(id: number): void {
+    const filteredProducts: Observable<ProductCard[]> = this.catalogService.filterProductBySubCategory(id);
+    this.filterEvent.emit(filteredProducts);
   }
 }

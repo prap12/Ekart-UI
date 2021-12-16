@@ -1,6 +1,7 @@
 export interface Record {
   id: number;
   name: string;
+  totalCount?: number;
 }
 
 export interface ProductCard extends Record {
@@ -20,6 +21,7 @@ export enum Color {
 export interface Size {
   id: number;
   size: string;
+  totalCount?: number;
 }
 
 // tslint:disable-next-line
