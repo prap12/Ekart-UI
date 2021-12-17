@@ -5,16 +5,20 @@ import { Injectable } from '@angular/core';
 })
 export class AuthService {
 
-  public getToken(): string {
-    return ''; // will update this
+  public setToken(token: string): void {
+    localStorage.setItem('access_token', token);
   }
 
-  public isAuthenticated(): boolean {
+  public getToken(): string {
+    return localStorage.getItem('access_token');
+  }
+
+  public isUserAuthenticated(): boolean {
     const token = this.getToken();
     return token !== null ? true : false;
   }
 
-  public logout() {
-    // remove token
+  public logout(): void {
+    localStorage.removeItem('access_token');
   }
 }

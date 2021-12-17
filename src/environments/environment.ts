@@ -4,10 +4,16 @@
 
 export const environment = {
   production: false,
+  // server URL
+  //baseUrl: 'https://postgres-database-ekart.herokuapp.com',
+  //apiUrl: 'https://postgres-database-ekart.herokuapp.com/api/v1'
+
+  // docker URL
+  // apiUrl: 'https://10.118.189.121:8080/api/v1',
+
+  // localhost URL
   baseUrl: 'http://127.0.0.1:8080',
-  // apiUrl: 'https://postgres-database-ekart.herokuapp.com/api/v1'
-  // apiUrl: 'http://10.118.189.121:8080/api/v1', // Docker URL
-  apiUrl: 'http://127.0.0.1:8080/api/v1', // localhost URL
+  apiUrl: 'http://127.0.0.1:8080/api/v1', 
 };
 
 /*

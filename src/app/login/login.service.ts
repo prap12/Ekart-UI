@@ -25,11 +25,11 @@ export class LoginService {
     return this.userSubject.asObservable();
   }
 
-  addUser(user: User): Observable<unknown> {
+  addUser(user: Partial<User>): Observable<unknown> {
     return this.http.post(userUrl, user);
   }
 
-  login(credentials: Partial<User>): Observable<unknown> {
+  login(credentials: Partial<User>): Observable<Partial<User>> {
     const obj = {
       username: credentials.email,
       password: credentials.password
