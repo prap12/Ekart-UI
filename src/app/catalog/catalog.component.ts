@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ProductCard } from './catalog.model';
@@ -15,12 +15,31 @@ export class CatalogComponent implements OnInit {
   productLength: number = 10;
   gridView: boolean = true;
 
+  filter_products: Object = {
+    category: '',
+    subcategory: '',
+    brand: [],
+    size: [],
+    color: [],
+    page_no: 0,
+    page_size: 10,
+    sort_by: 'name',
+    min_price: null,
+    max_price: null,
+  };
+
   constructor(private catalogService: CatalogService) {
-    this.productCards = this.catalogService.getAllProducts();
   }
 
   ngOnInit(): void {
+    this.productCards = this.catalogService.getAllProducts(this.filter_products);
   }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log("inside on changes")
+    console.log(changes)
+  }
+
   // tslint:disable-next-line
   trackById(index: number, data: any) {
     return data.id;
@@ -29,7 +48,7 @@ export class CatalogComponent implements OnInit {
     this.gridView = value === 'grid';
   }
 
-  receiveFilteredProduct($event) {
-    this.productCards = $event;
+  applyFilters($event) {
+    this.productCards = this.catalogService.getAllProducts($event);
   }
 }

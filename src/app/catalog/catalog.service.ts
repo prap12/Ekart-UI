@@ -4,13 +4,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
-import { Brand, Category, ProductCard, Size, SubCategory } from './catalog.model';
+import { Brand, Category, ProductCard, ProductFilter, Size, SubCategory } from './catalog.model';
 
 const productUrl = `${environment.apiUrl}/products`;
 const categoryUrl = `${environment.apiUrl}/category`;
-const brandsUrl = `${environment.apiUrl}/brands`;
-const sizesUrl = `${environment.apiUrl}/sizes`;
 const subcategoriesUrl = `${environment.apiUrl}/subcategory`;
+const productFilterUrl = `${productUrl}/getProductFilters`;
 
 @Injectable({
   providedIn: 'root'
@@ -18,37 +17,16 @@ const subcategoriesUrl = `${environment.apiUrl}/subcategory`;
 export class CatalogService {
 
   constructor(private http: HttpClient) { }
+  
 
-  getAllProducts(): Observable<ProductCard[]> {
-    return this.http.get<ProductCard[]>(productUrl);
+  getAllProducts(filter_products: Object): Observable<ProductCard[]> {
+    return this.http.post<ProductCard[]>(productUrl, filter_products);
   }
 
-  filterProductByCategory(id: number): Observable<ProductCard[]> {
-    const url = `${productUrl}/category/${id}`;
-    return this.http.get<ProductCard[]>(url);
+  getProductFilters(filter_products: object): Observable<ProductFilter> {
+    return this.http.post<ProductFilter>(productFilterUrl, filter_products);
   }
-
-  filterProductBySubCategory(id: number): Observable<ProductCard[]> {
-    const url = `${productUrl}/subcategory/${id}`;
-    return this.http.get<ProductCard[]>(url);
-  }
-
-  getAllCategories(): Observable<Category[]> {
-    return this.http.get<Category[]>(categoryUrl);
-  }
-
-  getAllSubCategories(): Observable<SubCategory[]> {
-    return this.http.get<SubCategory[]>(subcategoriesUrl);
-  }
-
-  getAllBrands(): Observable<Brand[]> {
-    return this.http.get<Brand[]>(brandsUrl);
-  }
-
-  getAllSizes(): Observable<Size[]> {
-    return this.http.get<Size[]>(sizesUrl);
-  }
-
+  
   getProductImagesById(id: number): Observable<Byte[]> {
     const productImgUrl = `${productUrl}/${id}/images`;
     return this.http.get<Byte[]>(productImgUrl);

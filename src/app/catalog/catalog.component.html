@@ -6,7 +6,7 @@
     <div class="row">
       <section class="col-lg-4">
         <div class="row mx-n2">
-          <catalog-filter (filterEvent)="receiveFilteredProduct($event)"></catalog-filter>
+          <catalog-filter [filter_products]="filter_products" (filter_productsChange)="applyFilters($event)"></catalog-filter>
         </div>
       </section>
       <section class="col-lg-8">
