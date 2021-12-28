@@ -36,20 +36,20 @@ export class FilterComponent implements OnInit {
     }
   };
 
-  slider_min: number = 0;
-  slider_max: number = 10000;
+  sliderMin: number = 0;
+  sliderMax: number = 10000;
   hasSubcategoryFilter: boolean = false;
   isFilterApplied: boolean = false;
   nonCheckboxFilterApplied: boolean = false;
   brandFilter: boolean = false;
   sizeFilter: boolean = false;
   colorFilter: boolean = false;
-  filteredBrands: Set<String> = new Set();
-  filteredSizes: Set<String> = new Set();
-  filterdColors: Set<String> = new Set();
+  filteredBrands: Set<string> = new Set();
+  filteredSizes: Set<string> = new Set();
+  filterdColors: Set<string> = new Set();
 
-  @Input() filter_products: Object;
-  @Output() filter_productsChange = new EventEmitter();
+  @Input() filterProducts: object;
+  @Output() filterProductsChange = new EventEmitter();
 
   // tslint:disable-next-line
   trackByIdentity = (index: number, item: any) => item;
@@ -63,23 +63,23 @@ export class FilterComponent implements OnInit {
 
   fetchProductFilters(filterType?: string) {
     this.isFilterApplied = this.nonCheckboxFilterApplied || this.brandFilter || this.sizeFilter || this.sizeFilter;
-    this.catalogService.getProductFilters(this.filter_products).subscribe((data) => {
-      if(data.max_price && filterType != 'price') {
+    this.catalogService.getProductFilters(this.filterProducts).subscribe((data) => {
+      if (data.max_price && filterType !== 'price') {
         this.rangeSlider = [0, Math.round(data.max_price)];
-        this.slider_max = Math.round(data.max_price);
+        this.sliderMax = Math.round(data.max_price);
       }
-      if(data.brand && !this.brandFilter) {
+      if (data.brand && !this.brandFilter) {
         this.allbrands = this.brands = data.brand;
       }
-      if(data.size && !this.sizeFilter) {
+      if (data.size && !this.sizeFilter) {
         this.allsizes = this.sizes = data.size;
       }
-      if(data.color && !this.colorFilter) {
+      if (data.color && !this.colorFilter) {
         this.colors = data.color;
       }
-      
+
       this.categories = data.category;
-      
+
       this.subcategories = this.allsubcategories = data.subcategory;
     });
   }
@@ -95,76 +95,77 @@ export class FilterComponent implements OnInit {
   }
 
   clearFilterApplied(): void {
-    this.isFilterApplied = this.nonCheckboxFilterApplied = this.hasSubcategoryFilter = this.brandFilter = this.sizeFilter = this.colorFilter = false;
+    this.isFilterApplied = this.nonCheckboxFilterApplied = this.hasSubcategoryFilter
+     = this.brandFilter = this.sizeFilter = this.colorFilter = false;
     this.filteredBrands.clear();
     this.filteredSizes.clear();
     this.filterdColors.clear();
-    this.filter_products['min_price'] = null;
-    this.filter_products['max_price'] = null;
-    this.filter_products['category'] = '';
-    this.filter_products['subcategory'] = '';
-    this.filter_products['brand'] = [];
-    this.filter_products['size'] = [];
-    this.filter_products['color'] = [];
-    this.filter_productsChange.emit(this.filter_products);
+    this.filterProducts['min_price'] = null;
+    this.filterProducts['max_price'] = null;
+    this.filterProducts['category'] = '';
+    this.filterProducts['subcategory'] = '';
+    this.filterProducts['brand'] = [];
+    this.filterProducts['size'] = [];
+    this.filterProducts['color'] = [];
+    this.filterProductsChange.emit(this.filterProducts);
     this.fetchProductFilters();
   }
 
   filterBySelectedBrands(event: Event): void {
-    const checked_id = (event.target as HTMLInputElement).id;
+    const checkedId = (event.target as HTMLInputElement).id;
     const isChecked = (event.target as HTMLInputElement).checked;
-    if(isChecked) {
-      this.filteredBrands.add(checked_id);
+    if (isChecked) {
+      this.filteredBrands.add(checkedId);
     } else {
-      this.filteredBrands.delete(checked_id);
+      this.filteredBrands.delete(checkedId);
     }
-    this.brandFilter = this.filteredBrands.size > 0; 
-    this.filter_products['brand'] = Array.from(this.filteredBrands);
-    this.filter_productsChange.emit(this.filter_products);
+    this.brandFilter = this.filteredBrands.size > 0;
+    this.filterProducts['brand'] = Array.from(this.filteredBrands);
+    this.filterProductsChange.emit(this.filterProducts);
     this.fetchProductFilters();
   }
-  
+
   filterBySelectedSizes(event: Event): void {
-    const checked_id = (event.target as HTMLInputElement).id;
+    const checkedId = (event.target as HTMLInputElement).id;
     const isChecked = (event.target as HTMLInputElement).checked;
-    if(isChecked) {
-      this.filteredSizes.add(checked_id);
+    if (isChecked) {
+      this.filteredSizes.add(checkedId);
     } else {
-      this.filteredSizes.delete(checked_id);
+      this.filteredSizes.delete(checkedId);
     }
-    this.sizeFilter = this.filteredSizes.size > 0; 
-    this.filter_products['size'] = Array.from(this.filteredSizes);
-    this.filter_productsChange.emit(this.filter_products);
+    this.sizeFilter = this.filteredSizes.size > 0;
+    this.filterProducts['size'] = Array.from(this.filteredSizes);
+    this.filterProductsChange.emit(this.filterProducts);
     this.fetchProductFilters();
   }
 
   filterBySelectedColors(event: Event): void {
-    const checked_id = (event.target as HTMLInputElement).value;
+    const checkedId = (event.target as HTMLInputElement).value;
     const isChecked = (event.target as HTMLInputElement).checked;
-    if(isChecked) {
-      this.filterdColors.add(checked_id);
+    if (isChecked) {
+      this.filterdColors.add(checkedId);
     } else {
-      this.filterdColors.delete(checked_id)
+      this.filterdColors.delete(checkedId);
     }
-    this.colorFilter = this.filterdColors.size > 0; 
-    this.filter_products['color'] = Array.from(this.filterdColors);
-    this.filter_productsChange.emit(this.filter_products);
+    this.colorFilter = this.filterdColors.size > 0;
+    this.filterProducts['color'] = Array.from(this.filterdColors);
+    this.filterProductsChange.emit(this.filterProducts);
     this.fetchProductFilters();
   }
 
   updateSliderRange(data: number[]) {
     this.rangeSlider = data;
     this.nonCheckboxFilterApplied = true;
-    this.filter_products['min_price'] = this.rangeSlider[0];
-    this.filter_products['max_price'] = this.rangeSlider[1];
-    this.filter_productsChange.emit(this.filter_products);
+    this.filterProducts['min_price'] = this.rangeSlider[0];
+    this.filterProducts['max_price'] = this.rangeSlider[1];
+    this.filterProductsChange.emit(this.filterProducts);
     this.fetchProductFilters('price');
   }
 
   bindRangeSliderInput(event: Event, index: number, refElement: NouisliderComponent) {
     const input = parseInt((event.target as HTMLInputElement).value, 10);
-    if (index === 1 && input > this.slider_max) {
-      this.rangeSlider[index] = this.slider_max;
+    if (index === 1 && input > this.sliderMax) {
+      this.rangeSlider[index] = this.sliderMax;
     } else if (index === 0 && input > this.rangeSlider[1]){
       this.rangeSlider[0] = input;
       this.rangeSlider[1] = input;
@@ -173,9 +174,9 @@ export class FilterComponent implements OnInit {
     }
     refElement.writeValue(this.rangeSlider);
     this.nonCheckboxFilterApplied = true;
-    this.filter_products['min_price'] = this.rangeSlider[0];
-    this.filter_products['max_price'] = this.rangeSlider[1];
-    this.filter_productsChange.emit(this.filter_products);
+    this.filterProducts['min_price'] = this.rangeSlider[0];
+    this.filterProducts['max_price'] = this.rangeSlider[1];
+    this.filterProductsChange.emit(this.filterProducts);
     this.fetchProductFilters('price');
   }
 
@@ -191,17 +192,17 @@ export class FilterComponent implements OnInit {
 
   filterProductByCategory(name: string): void {
     this.nonCheckboxFilterApplied = true;
-    this.filter_products['category'] = name;
-    this.filter_productsChange.emit(this.filter_products);
+    this.filterProducts['category'] = name;
+    this.filterProductsChange.emit(this.filterProducts);
     this.fetchProductFilters('category');
   }
 
   filterProductBySubCategory(categoryname: string, subcategoryname: string): void {
     this.nonCheckboxFilterApplied = true;
     this.hasSubcategoryFilter = true;
-    this.filter_products['category'] = categoryname;
-    this.filter_products['subcategory'] = subcategoryname;
-    this.filter_productsChange.emit(this.filter_products);
+    this.filterProducts['category'] = categoryname;
+    this.filterProducts['subcategory'] = subcategoryname;
+    this.filterProductsChange.emit(this.filterProducts);
     this.fetchProductFilters('subcategory');
   }
 }

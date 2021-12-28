@@ -17,16 +17,16 @@ const productFilterUrl = `${productUrl}/getProductFilters`;
 export class CatalogService {
 
   constructor(private http: HttpClient) { }
-  
 
-  getAllProducts(filter_products: Object): Observable<ProductCard[]> {
-    return this.http.post<ProductCard[]>(productUrl, filter_products);
+
+  getAllProducts(filterProducts: object): Observable<ProductCard[]> {
+    return this.http.post<ProductCard[]>(productUrl, filterProducts);
   }
 
-  getProductFilters(filter_products: object): Observable<ProductFilter> {
-    return this.http.post<ProductFilter>(productFilterUrl, filter_products);
+  getProductFilters(filterProducts: object): Observable<ProductFilter> {
+    return this.http.post<ProductFilter>(productFilterUrl, filterProducts);
   }
-  
+
   getProductImagesById(id: number): Observable<Byte[]> {
     const productImgUrl = `${productUrl}/${id}/images`;
     return this.http.get<Byte[]>(productImgUrl);

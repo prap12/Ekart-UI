@@ -15,7 +15,7 @@ export class CatalogComponent implements OnInit {
   productLength: number = 10;
   gridView: boolean = true;
 
-  filter_products: Object = {
+  filterProducts: object = {
     category: '',
     subcategory: '',
     brand: [],
@@ -32,7 +32,7 @@ export class CatalogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.productCards = this.catalogService.getAllProducts(this.filter_products);
+    this.productCards = this.catalogService.getAllProducts(this.filterProducts);
   }
 
   // tslint:disable-next-line
