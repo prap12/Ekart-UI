@@ -30,8 +30,18 @@ export interface Category extends Record {
 
 // tslint:disable-next-line
 export interface SubCategory extends Record {
+  categoryId?: number;
 }
 
 // tslint:disable-next-line
 export interface Brand extends Record {
+}
+
+export interface ProductFilter {
+  max_price?: number;
+  brand?: Brand[];
+  size?: Size[];
+  color?: string[];
+  category?: Category[];
+  subcategory?: SubCategory[];
 }

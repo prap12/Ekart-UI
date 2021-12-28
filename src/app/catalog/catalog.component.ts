@@ -15,12 +15,26 @@ export class CatalogComponent implements OnInit {
   productLength: number = 10;
   gridView: boolean = true;
 
+  filterProducts: object = {
+    category: '',
+    subcategory: '',
+    brand: [],
+    size: [],
+    color: [],
+    page_no: 0,
+    page_size: 10,
+    sort_by: 'name',
+    min_price: null,
+    max_price: null,
+  };
+
   constructor(private catalogService: CatalogService) {
-    this.productCards = this.catalogService.getAllProducts();
   }
 
   ngOnInit(): void {
+    this.productCards = this.catalogService.getAllProducts(this.filterProducts);
   }
+
   // tslint:disable-next-line
   trackById(index: number, data: any) {
     return data.id;
@@ -29,7 +43,7 @@ export class CatalogComponent implements OnInit {
     this.gridView = value === 'grid';
   }
 
-  receiveFilteredProduct($event) {
-    this.productCards = $event;
+  applyFilters($event) {
+    this.productCards = this.catalogService.getAllProducts($event);
   }
 }

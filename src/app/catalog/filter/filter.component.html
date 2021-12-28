@@ -7,7 +7,13 @@
         <div class="offcanvas-body py-grid-gutter px-lg-grid-gutter">
             <!-- Categories -->
             <div class="widget widget-categories mb-4 pb-4 border-bottom">
-                <h3 class="widget-title">Shop categories</h3>
+                <h3 class="widget-title">Shop categories
+                    <ng-template [ngIf]="isFilterApplied">
+                        <button class="btn btn-link filterBtn" type="button" (click)="clearFilterApplied()">
+                            Clear All
+                        </button>
+                    </ng-template>
+                </h3>
                 <div id="shop-categories" class="accordion">
                     <!-- Category with search bar and scrollbar (more items) -->
                     <div class="accordion-item" *ngFor="let category of categories; let elementIndex=index">
@@ -20,29 +26,34 @@
                         <div id="{{category.name}}" class="accordion-collapse collapse" [ngClass]="{'show': elementIndex === 0 }" data-bs-parent="#shop-categories">
                             <div class="accordion-body">
                                 <div class="widget widget-links widget-filter">
-                        
                                     <!-- Search -->
-                                    <div class="input-group input-group-sm">
-                                        <input type="text" class="widget-filter-search form-control rounded-end" placeholder="Search" id="elementIndex" [(ngModel)]="searchText"
-                                            (input)="search($event)"
-                                        >
-                                        <i class="bi bi-search searchIcon w3-tiny"></i>
-                                    </div>
+                                    <ng-template [ngIf]="!hasSubcategoryFilter">
+                                        <div class="input-group input-group-sm">
+                                            <input type="text" class="widget-filter-search form-control rounded-end" placeholder="Search" id="elementIndex" [(ngModel)]="searchText"
+                                                (input)="search($event)"
+                                            >
+                                            <i class="bi bi-search searchIcon w3-tiny"></i>
+                                        </div>
+                                    </ng-template>
                         
                                     <!-- Sub-categories -->
                                     <ul class="widget-list widget-filter-list pt-1 max-height-13">
-                                        <!--Todo: To be removed in future and also remove hardcoded values-->
-                                        <li class="widget-list-item widget-filter-item">
-                                            <a class="widget-list-link d-flex justify-content-between align-items-center" (click)='filterProductByCategory(category.id)'>
-                                                <span class="widget-filter-item-text">View all</span>
-                                                <span class="fs-xs text-muted ms-3">{{category.totalCount}}</span>
-                                            </a>
-                                        </li>
+                                        <ng-template [ngIf]="!hasSubcategoryFilter">
+                                            <li class="widget-list-item widget-filter-item">
+                                                <a class="widget-list-link d-flex justify-content-between align-items-center" (click)='filterProductByCategory(category.name)'>
+                                                    <span class="widget-filter-item-text">View all</span>
+                                                    <span class="fs-xs text-muted ms-3">{{category.totalCount}}</span>
+                                                </a>
+                                            </li>
+                                        </ng-template>
+
                                         <li class="widget-list-item widget-filter-item" *ngFor="let subcategory of subcategories; trackBy:trackByIdentity">
-                                            <a class="widget-list-link d-flex justify-content-between align-items-center" (click)='filterProductBySubCategory(subcategory.id)'>
-                                                <span class="widget-filter-item-text">{{subcategory.name}}</span>
-                                                <span class="fs-xs text-muted ms-3">{{subcategory.totalCount}}</span>
-                                            </a>
+                                            <ng-template [ngIf]="subcategory.categoryId === category.id">
+                                                <a class="widget-list-link d-flex justify-content-between align-items-center" (click)='filterProductBySubCategory(category.name, subcategory.name)'>
+                                                    <span class="widget-filter-item-text">{{subcategory.name}}</span>
+                                                    <span class="fs-xs text-muted ms-3">{{subcategory.totalCount}}</span>
+                                                </a>
+                                            </ng-template>
                                         </li>
                                     </ul>
                                 </div>
@@ -55,7 +66,7 @@
             <div class="widget mb-4 pb-4 border-bottom">
                 <h3 class="widget-title">Price</h3>
                 <div class="range-slider">
-                    <nouislider #refElement [config]="rangeSliderConfig" [ngModel]="rangeSlider" [tooltips]="[ true, true ]" (slide)="updateSliderRange($event)"></nouislider>
+                    <nouislider #refElement [config]="rangeSliderConfig" [min]="sliderMin" [max]="sliderMax" [ngModel]="rangeSlider" [tooltips]="[ true, true ]" (slide)="updateSliderRange($event)"></nouislider>
                     <div class="d-flex">
                         <div class="w-50 pe-2 me-2">
                           <div class="input-group input-group-sm"><span class="input-group-text currency"></span>
@@ -80,9 +91,9 @@
                     <i class="bi bi-search searchIcon w3-tiny"></i>
                 </div>
                 <ul class="widget-list widget-filter-list list-unstyled max-height-13">
-                    <li class="widget-filter-item d-flex justify-content-between align-items-center mb-1" *ngFor="let brand of brands; trackBy:trackByIdentity">
+                    <li class="widget-filter-item d-flex justify-content-between align-items-center mt-1" *ngFor="let brand of brands; trackBy:trackByIdentity">
                         <div class="form-check">
-                        <input type="checkbox" id="{{brand.name}}" class="form-check-input">
+                        <input type="checkbox" id="{{brand.name}}" class="form-check-input" [checked]="filteredBrands.has(brand.name)" (change)="filterBySelectedBrands($event)">
                         <label class="form-check-label widget-filter-item-text" for="{{brand.name}}">{{brand.name}}</label>
                         </div>
                         <span class="fs-xs text-muted">{{brand.totalCount}}</span>
@@ -100,9 +111,9 @@
                     <i class="bi bi-search searchIcon w3-tiny"></i>
                 </div>
                 <ul class="widget-list widget-filter-list list-unstyled max-height-13">
-                    <li class="widget-filter-item d-flex justify-content-between align-items-center mb-1" *ngFor="let size of sizes; trackBy:trackByIdentity">
+                    <li class="widget-filter-item d-flex justify-content-between align-items-center mt-1" *ngFor="let size of sizes; trackBy:trackByIdentity">
                         <div class="form-check">
-                        <input type="checkbox" id="{{size.size}}" class="form-check-input">
+                        <input type="checkbox" id="{{size.size}}" class="form-check-input" [checked]="filteredSizes.has(size.size)" (change)="filterBySelectedSizes($event)">
                         <label class="form-check-label widget-filter-item-text" for="{{size.size}}">{{size.size}}</label>
                         </div>
                         <span class="fs-xs text-muted">{{size.totalCount}}</span>
@@ -114,8 +125,8 @@
             <div class="widget">
                 <h3 class="widget-title">Color</h3>
                 <div class="d-flex flex-wrap">
-                    <div class="form-check form-option text-center mb-2 mx-1 color-width" *ngFor="let color of getColors();">
-                      <input class="form-check-input" type="checkbox" id="color-{{color}}">
+                    <div class="form-check form-option text-center mb-2 mx-1 color-width" *ngFor="let color of colors;">
+                      <input class="form-check-input" type="checkbox" id="color-{{color}}" [checked]="filterdColors.has(color)" value="{{color}}" (click)="filterBySelectedColors($event)">
                       <label class="form-option-label rounded-circle" for="color-{{color}}">
                           <span class="form-option-color rounded-circle label-color-{{color}}"></span>
                         </label>
