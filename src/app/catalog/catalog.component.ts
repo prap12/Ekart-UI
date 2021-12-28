@@ -1,4 +1,4 @@
-import { Component, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ProductCard } from './catalog.model';
@@ -33,11 +33,6 @@ export class CatalogComponent implements OnInit {
 
   ngOnInit(): void {
     this.productCards = this.catalogService.getAllProducts(this.filter_products);
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    console.log("inside on changes")
-    console.log(changes)
   }
 
   // tslint:disable-next-line
