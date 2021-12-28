@@ -4,11 +4,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
-import { Brand, Category, ProductCard, ProductFilter, Size, SubCategory } from './catalog.model';
+import { ProductCard, ProductFilter } from './catalog.model';
 
 const productUrl = `${environment.apiUrl}/products`;
-const categoryUrl = `${environment.apiUrl}/category`;
-const subcategoriesUrl = `${environment.apiUrl}/subcategory`;
 const productFilterUrl = `${productUrl}/getProductFilters`;
 
 @Injectable({

@@ -35,7 +35,6 @@ export interface SubCategory extends Record {
 
 // tslint:disable-next-line
 export interface Brand extends Record {
-  isChecked?: boolean;
 }
 
 export interface ProductFilter {
