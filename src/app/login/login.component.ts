@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { AuthService } from '../auth/auth.service';
 
 import { User } from './login.model';
 import { LoginService } from './login.service';
@@ -13,10 +14,12 @@ import { LoginService } from './login.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  invalidLogin: boolean = false;
+  invalidSignIn: boolean = false;
+  invalidSignUp: boolean = false;
 
   constructor(private activeModal: NgbActiveModal,
-              private loginService: LoginService) { }
+    private authService: AuthService,
+    private loginService: LoginService) { }
 
   onSignIn(data: NgForm) {
     const credentials: Partial<User> = {
@@ -25,19 +28,21 @@ export class LoginComponent {
     };
 
     this.loginService.login(credentials).pipe(
-      tap(() => {
-        this.invalidLogin = false;
-        this.activeModal.close();
+      tap((response: Partial<User>) => {
+        this.invalidSignIn = false;
+        this.loginService.setUserName(response.name);
+        this.authService.setToken(response.token);
+        this.closeModal();
       }),
       catchError(() => {
-        this.invalidLogin = true;
+        this.invalidSignIn = true;
         return of();
       })
     ).subscribe();
   }
 
   onSignUp(data: NgForm) {
-    const user: User = {
+    const user: Partial<User> = {
       name: data.form.value.name,
       password: data.form.value.password,
       email: data.form.value.email,
@@ -46,9 +51,11 @@ export class LoginComponent {
 
     this.loginService.addUser(user).pipe(
       tap(() => {
-        this.activeModal.close();
+        this.invalidSignUp = false;
+        this.closeModal();
       }),
       catchError(() => {
+        this.invalidSignUp = true;
         return of();
       })
     ).subscribe();

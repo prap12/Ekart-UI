@@ -13,12 +13,13 @@ export class TokenInterceptor implements HttpInterceptor {
 
   // tslint:disable-next-line: no-any
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // commented for testing
-    // req = req.clone({
-    //   setHeaders: {
-    //     Authorization: `Bearer ${this.auth.getToken()}`
-    //   }
-    // });
+    if (this.auth.isUserAuthenticated() && !req.url.includes('login')) {
+      req = req.clone({
+        setHeaders: {
+          Authorization: `Bearer ${this.auth.getToken()}`
+        }
+      });
+    }
 
     return next.handle(req);
   }
