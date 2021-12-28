@@ -62,7 +62,7 @@ export class FilterComponent implements OnInit {
   }
 
   fetchProductFilters(filterType?: string) {
-    this.isFilterApplied = this.nonCheckboxFilterApplied || this.brandFilter || this.sizeFilter || this.sizeFilter;
+    this.isFilterApplied = this.nonCheckboxFilterApplied || this.brandFilter || this.sizeFilter || this.colorFilter;
     this.catalogService.getProductFilters(this.filterProducts).subscribe((data) => {
       if (data.max_price && filterType !== 'price') {
         this.rangeSlider = [0, Math.round(data.max_price)];
